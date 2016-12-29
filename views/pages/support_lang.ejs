@@ -9,12 +9,12 @@
                         <td>Country Code</td>
                         <td>Language</td>
                     </tr>
-                    <% for (let [key, value] of langs) { %>
+                    <% langs.forEach(function(lang){ %>
                     <tr>
-                        <td><%= key %></td>
-                        <td><%= value %></td>
+                        <td><%= lang[0] %></td>
+                        <td><%= lang[1] %></td>
                     </tr>
-                    <% }; %>
+                    <% }); %>
                 </table>
             </div>
         </div>
