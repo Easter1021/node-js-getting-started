@@ -1,0 +1,22 @@
+<% extend('../layout') %>
+    <div class="container">
+        <h2>Language List</h2>
+        <p>We are support these languages.</p>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <table class="table table-bordered">
+                    <tr>
+                        <td>Country Code</td>
+                        <td>Language</td>
+                    </tr>
+                    <% for (let [key, value] of langs) { %>
+                    <tr>
+                        <td><%= key %></td>
+                        <td><%= value %></td>
+                    </tr>
+                    <% }; %>
+                </table>
+            </div>
+        </div>
+
+    </div>
