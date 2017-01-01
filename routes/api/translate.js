@@ -40,22 +40,22 @@
 var express = require('express'), 
     router = express.Router();
 
-const translate = require('google-translate-api');
+const translate = require('../../lib/translate');
 
 router
     .get('/', function(req, res, next) {
         if(!req.query.text)
             res.status(406).send({error: 'No text input!'});
         else {
-            translate(req.query.text, Object.assign({from: 'auto', to: 'en'}, req.query))
-                .then(result => {
+            translate.tt(req.query.text, req.query).then(function (result) {
+                if(result.success) {
                     res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify({success: true, text: result.text}));
-                })
-                .catch(err => {
-                    console.log(err.stack);
-                    res.status(500).send('Something broke!');
-                });
+                    res.send(JSON.stringify(result));
+                }
+                else {
+                    res.status(result.status).send(result.text);
+                }
+            });
         }
     });
 

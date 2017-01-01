@@ -9,18 +9,24 @@ var line = require('node-line-bot-api'),
         channelSecret: process.env.ChannelSecret
     });
 
+const translate = require('../../lib/translate');
+
 router
     .post('/webhooks', line.validator.validateSignature(), function (req, res, next) {
         var promises = req.body.events.map(function (event) {
             // reply message
-            return line.client
-                .replyMessage({
-                    replyToken: event.replyToken,
-                    messages: [{
-                        type: 'text',
-                        text: event.message.text
-                    }]
-                })
+            return translate.tt(event.message.text, event.message).then(function (result) {
+                if(result.success)
+                    return line.client
+                        .replyMessage({
+                            replyToken: event.replyToken,
+                            messages: [{
+                                type: 'text',
+                                text: result.text
+                            }]
+                        });
+                return ;
+            });
         })
         Promise.all(promises)
             .then(function () {

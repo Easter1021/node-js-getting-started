@@ -1,0 +1,50 @@
+<% extend('../layout') %>
+    <script type="text/javascript" src="//cdn.socket.io/socket.io-1.4.5.js"></script>
+    <script>
+        var socket = io(window.location.origin);
+        socket.on('response-realtime-translate', function (data) {
+            console.log(data);
+            $('#receiver').text(JSON.stringify(data, null, 4));
+        });
+        $(function () {
+            $('.submit').on('click', function () {
+                socket.emit('request-realtime-translate', { 
+                    text: $('#sender').val(),
+                    to: $("#to").val()
+                });
+            });
+            $("#to").val("en");
+            $('select').select2();
+        });
+    </script>
+    <div class="container">
+        <h2>Realtime Translate Demo</h2>
+        <hr>
+        <div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <select id="from">
+                        <% langs.forEach(function(lang){ %>
+                        <option value="<%= lang[0] %>"><%= lang[1] %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea id='sender' class="form-control" rows="6" placeholder="input some text here. and click Submit button."></textarea>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary submit">Submit</button>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <select id="to">
+                        <% langs.forEach(function(lang){ %>
+                        <option value="<%= lang[0] %>"><%= lang[1] %></option>
+                        <% }); %>
+                    </select>
+                </div>
+                <pre id="receiver"></pre>
+            </div>
+        </div>
+    </div>

@@ -33,6 +33,18 @@ app.use('/v1/translate', require('./routes/api/translate'));
 // bot routes
 app.use('/bot/line-message', require('./routes/bot/line-message'));
 
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
+// realtime translate for demo
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+io.on('connection', function (socket) {
+    const translate = require('./lib/translate');
+    socket.on('request-realtime-translate', function (query) {
+        translate.tt(query.text, query).then(function (result) {
+            socket.emit('response-realtime-translate', result);
+        });
+    });
+});
+
+server.listen(app.get('port'), function() {
+    console.log('Gulp is starting my app on PORT: ', app.get('port'));
 });
