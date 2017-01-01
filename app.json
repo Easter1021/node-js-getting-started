@@ -1,7 +1,7 @@
 {
   "name": "Free Translate Bot",
   "description": "A Free Translate Bot reply api & website",
-  "repository": "https://github.com/Easter1021/free-translate-bot.git",
+  "repository": "https://github.com/Easter1021/node-js-getting-started/tree/nodejs-free-translate-bot",
   "logo": "http://node-js-sample.herokuapp.com/node.svg",
   "keywords": ["translate", "chat", "bot", "api", "static"]
 }
