@@ -5,7 +5,7 @@ if(fs.existsSync('.env'))
 
 // require
 // var _ = require('lodash');
-// var request = require('superagent');
+var request = require('superagent');
 var express = require('express'),
     favicon = require('serve-favicon'),
     logger = require('morgan'),
@@ -37,11 +37,19 @@ app.use('/bot/line-message', require('./routes/bot/line-message'));
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 io.on('connection', function (socket) {
-    const translate = require('./lib/translate');
     socket.on('request-realtime-translate', function (query) {
-        translate.tt(query.text, query).then(function (result) {
-            socket.emit('response-realtime-translate', result);
-        });
+        return request
+            .get('localhost:'+app.get('port')+'/v1/translate')
+            .query(query)
+            .set('Accept', 'application/json')
+            .end(function (err, result) {
+                if (err || !result.ok) {
+                    socket.emit('response-realtime-translate', err);
+                } 
+                else {
+                    socket.emit('response-realtime-translate', result.body);
+                }
+            });
     });
 });
 

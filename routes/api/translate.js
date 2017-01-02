@@ -40,14 +40,14 @@
 var express = require('express'), 
     router = express.Router();
 
-const translate = require('../../lib/translate');
+const Translate = require('../../lib/translate');
 
 router
     .get('/', function(req, res, next) {
         if(!req.query.text)
             res.status(406).send({error: 'No text input!'});
         else {
-            translate.tt(req.query.text, req.query).then(function (result) {
+            Translate.tt(req.query.text, req.query).then(function (result) {
                 if(result.success) {
                     res.setHeader('Content-Type', 'application/json');
                     res.send(JSON.stringify(result));
