@@ -28,7 +28,6 @@ app.set('view engine', 'ejs');
 
 // init routes
 app.use('/', require('./routes/index'));
-app.use('/support_lang', require('./routes/support_lang'));
 app.use('/v1/translate', require('./routes/api/translate'));
 // bot routes
 app.use('/bot/line-message', require('./routes/bot/line-message'));

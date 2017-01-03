@@ -1,3 +1,10 @@
+/** 
+ * this is translate core and api document.
+ * api doc produce....
+ * $ npm install apidoc -g
+ * $ apidoc -i routes/api -o public/document/v1
+ */
+
 /**
  * @api {get} /translate translate text
  * @apiName get
@@ -47,15 +54,17 @@ router
         if(!req.query.text)
             res.status(406).send({error: 'No text input!'});
         else {
-            Translate.tt(req.query.text, req.query).then(function (result) {
-                if(result.success) {
-                    res.setHeader('Content-Type', 'application/json');
-                    res.send(JSON.stringify(result));
-                }
-                else {
-                    res.status(result.status).send(result.text);
-                }
-            });
+            Translate.tt(req.query.text, req.query)
+                // callback
+                .then(function (result) {
+                    if(result.success) {
+                        res.setHeader('Content-Type', 'application/json');
+                        res.send(JSON.stringify(result));
+                    }
+                    else {
+                        res.status(result.status).send(result.text);
+                    }
+                });
         }
     });
 
